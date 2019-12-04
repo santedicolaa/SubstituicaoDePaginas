@@ -1,20 +1,12 @@
 import java.util.LinkedList;
 
 public class Otimo {
-    protected int indice;
-    private static LinkedList quadros;
-    protected int acertos;
-    protected int faltas;
-    protected int numeroDeQuadros;
-    protected int aux;
-    protected int j;
-    protected int k;
-    protected boolean interruption;
+    private LinkedList quadros;
+    private int acertos;
+    private int faltas;
+    private int numeroDeQuadros;
 
     public Otimo(int frames) {
-        if (numeroDeQuadros < 0)
-            throw new IllegalArgumentException();
-        this.indice = 0;
         this.acertos = 0;
         this.faltas = 0;
         this.numeroDeQuadros = frames;
@@ -41,49 +33,48 @@ public class Otimo {
 
         for (i = 0; i < arrayAux.length; i++) {
             if (!quadros.contains(arrayAux[i])) {
-                faltas++;
+                this.faltas++;
                 if (quadros.size() < numeroDeQuadros) {
+                    
                     quadros.add(arrayAux[i]);
                 }
                 else {
-                    aux = 0;
-                    j = 0;
-                    k = i+1;
-                    interruption = false;
+                    int aux = 0;
+                    int j = 0;
+                    int k, indice = 0;
+                    boolean interruption = false;
 
                     while(j < numeroDeQuadros){
+                        k = i+1;
                         while(k < arrayAux.length){
-                            if(quadros.get(j) == arrayAux[k]){
+                            if(quadros.get(j) != arrayAux[k]){
+                                k++;
+                            }
+                            
+                            else{
+                                interruption = true;
                                 if(k > aux){
                                     aux = k;
                                     indice = j;
-                                    interruption = true;
                                 }
+                                break;
                             }
-                            k++;
                         }
 
                         if(!interruption){
-                            quadros.remove(j);
-                            quadros.add(j,arrayAux[i]);
+                            indice = j;
                             break;
                         }
                         j++;
                     }
-
-                    if(interruption){
-                        quadros.remove(indice);
-                        quadros.add(indice,arrayAux[i]);
-                    }
-
+                    quadros.remove(indice);
+                    quadros.add(indice,arrayAux[i]);
                 }
             }
 
             else {
-                acertos++;
+                this.acertos++;
             }
         }
     }
 }
-
-
