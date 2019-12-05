@@ -1,36 +1,48 @@
 import java.util.LinkedList;
 
-class FIFO extends AlgoritmoDeSubstituicao {
-    private static int INSERCAO = 0;
+public class FIFO {
+    private int INSERCAO = 0;
+    private LinkedList<String> frames;
+    private int acertos, faltas, qtd_frames;
 
     public FIFO(int frames) {
-        super(frames);
-        this.quadros = new LinkedList();
+        this.acertos = 0;
+        this.faltas = 0;
+        this.frames = new LinkedList();
+        this.qtd_frames = frames;
     }
 
-    @Override
-    public void inserir(String stringArray) {
-        String[] arrayAux = stringArray.split("W");
-        String[] arrayAux2 = arrayAux[0].split("R");
-        String pageNumber = arrayAux2[0];
+    public int getAcertos() { return acertos; }
 
-        // antes de inserir, checar se a pagina ja esta na lista
-        if (!quadros.contains(pageNumber)) {
-            erros++;
-            // se a quantidade de paginas na memoria for menor que o numero de quadros ou seja, ainda ha espaco
-            if (quadros.size() < numeroDeQuadros) {
-                quadros.add(pageNumber);
-            } else {
-                quadros.remove(INSERCAO);
-                quadros.add(INSERCAO, pageNumber);
-                INSERCAO++;
-                if (INSERCAO == numeroDeQuadros) {
-                    INSERCAO = 0;
+    public int getFaltas() { return faltas;  }
+
+    public void fifo(String[] arrayEntrada) {
+
+        String[] arrayAux = new String[arrayEntrada.length];
+        int i;
+
+        for (i = 0; i < arrayEntrada.length; i++) {
+            arrayAux[i] = arrayEntrada[i].substring (0, arrayEntrada[i].length() - 1);
+        }
+
+        for(i=0;i<arrayAux.length;i++){
+            if (!frames.contains(arrayAux[i])) {
+                faltas++;
+                if (frames.size() < qtd_frames) {
+                    frames.add(arrayAux[i]);
+                }
+                else {
+                    frames.remove(INSERCAO);
+                    frames.add(INSERCAO, arrayAux[i]);
+                    INSERCAO++;
+                    if (INSERCAO == qtd_frames) {
+                        INSERCAO = 0;
+                    }
                 }
             }
-        }
-        else {
-            acertos++;
+            else {
+                acertos++;
+            }
         }
     }
 }
