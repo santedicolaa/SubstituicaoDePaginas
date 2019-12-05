@@ -1,7 +1,8 @@
 import java.util.LinkedList;
 
 public class Otimo {
-    private LinkedList quadros;
+    private LinkedList<String> quadros;
+    private LinkedList<Integer> delta;
     private int acertos;
     private int faltas;
     private int numeroDeQuadros;
@@ -10,7 +11,8 @@ public class Otimo {
         this.acertos = 0;
         this.faltas = 0;
         this.numeroDeQuadros = frames;
-        this.quadros = new LinkedList();
+        this.quadros = new LinkedList<>();
+        this.delta = new LinkedList<>();
 
     }
 
@@ -22,57 +24,66 @@ public class Otimo {
         return faltas;
     }
 
-    public void calcular(String[] stringArray) {
-        int i;
+    public int calcularDelta (String[] array, int ini, String num){
+        int delta = 0;
+        for(int i = ini; i<array.length; i++){
+            if(num.equals(array[i])){
+                return delta;
+            }
+            delta++;
+        }
+        return delta+1;
+    }
 
-        String[] arrayAux = new String[stringArray.length];
+    public void rodar(String[] stringEntrada) {
+        int i, j, aux;
 
-        for (i = 0; i < stringArray.length; i++) {
-            arrayAux[i] = stringArray[i].substring (0, stringArray[i].length() - 1);
+        String[] arrayAux = new String[stringEntrada.length];
+
+        for (i = 0; i < stringEntrada.length; i++) {
+            arrayAux[i] = stringEntrada[i].substring (0, stringEntrada[i].length() - 1);
         }
 
-        for (i = 0; i < arrayAux.length; i++) {
-            if (!quadros.contains(arrayAux[i])) {
+        for (i = 0; i<arrayAux.length; i++){
+            if(!quadros.contains(arrayAux[i])){
                 this.faltas++;
-                if (quadros.size() < numeroDeQuadros) {
-                    
+
+                if(quadros.size() < numeroDeQuadros){
+                    System.out.println("Falta! Entra o "+arrayAux[i]);
                     quadros.add(arrayAux[i]);
                 }
-                else {
-                    int aux = 0;
-                    int j = 0;
-                    int k, indice = 0;
-                    boolean interruption = false;
 
-                    while(j < numeroDeQuadros){
-                        k = i+1;
-                        while(k < arrayAux.length){
-                            if(quadros.get(j) != arrayAux[k]){
-                                k++;
-                            }
-                            
-                            else{
-                                interruption = true;
-                                if(k > aux){
-                                    aux = k;
-                                    indice = j;
-                                }
-                                break;
-                            }
-                        }
-
-                        if(!interruption){
-                            indice = j;
-                            break;
-                        }
-                        j++;
+                else{
+                    int ini_delta = i+1;
+                    delta.clear();
+                    if(ini_delta>=arrayAux.length){
+                        System.out.println("Falta! Sai o "+quadros.get(0)+" e entra o "+arrayAux[i]);
+                        quadros.remove(0);
+                        quadros.add(0,arrayAux[i]);
                     }
-                    quadros.remove(indice);
-                    quadros.add(indice,arrayAux[i]);
+
+                    else{
+                        for(j=0;j<quadros.size();j++){
+                            delta.add(calcularDelta(arrayAux,ini_delta,quadros.get(j)));
+                        }
+
+                        aux = 0;
+                        for(j = 0; j<delta.size();j++){
+                            if(delta.get(j) > aux){
+                                aux = j;
+                            }
+                        }
+
+                        delta.clear();
+                        System.out.println("Falta! Sai o "+quadros.get(aux)+" e entra o "+arrayAux[i]);
+                        quadros.remove(aux);
+                        quadros.add(aux,arrayAux[i]);
+                    }
                 }
             }
-
-            else {
+            
+            else{
+                System.out.println("Acerto! Permanece o "+arrayAux[i]);
                 this.acertos++;
             }
         }
