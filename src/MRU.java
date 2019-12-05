@@ -1,36 +1,47 @@
 import java.util.LinkedList;
 
-class MRU extends AlgoritmoDeSubstituicao {
+public class MRU {
+
+
+    private LinkedList<String> frames;
+    private int acertos, faltas, qtd_frames;
 
     public MRU(int frames) {
-        super(frames);
-        // TODO Auto-generated constructor stub
-        this.quadros = new LinkedList();
-
+        this.acertos = 0;
+        this.faltas = 0;
+        this.frames = new LinkedList();
+        this.qtd_frames = frames;
     }
 
-    @Override
-    public void inserir(String stringArray) {
-        // TODO Auto-generated method stub
-        String[] arrayAux = stringArray.split("W");
-        String[] arrayAux2 = arrayAux[0].split("R");
-        String pageNumber = arrayAux2[0];
+    public int getAcertos() { return acertos; }
 
-        int tmp = quadros.indexOf(pageNumber);
-        if (tmp == -1) {
-            if (quadros.size() < numeroDeQuadros) {
-                quadros.add(pageNumber);
+    public int getFaltas() { return faltas;  }
+
+    public void MRU(String[] arrayEntrada) {
+
+        String[] arrayAux = new String[arrayEntrada.length];
+        int i;
+
+        for (i = 0; i < arrayEntrada.length; i++) {
+            arrayAux[i] = arrayEntrada[i].substring (0, arrayEntrada[i].length() - 1);
+        }
+
+        for(i = 0; i<arrayAux.length;i++){
+            int tmp = frames.indexOf(arrayAux[i]);
+            if (tmp == -1) {
+                if (frames.size() < qtd_frames) {
+                    frames.add(arrayAux[i]);
+                } else {
+
+                    frames.remove(0);
+                    frames.add(arrayAux[i]);
+                }
+                faltas++;
             } else {
-
-                quadros.remove(0);
-                quadros.add(pageNumber);
+                frames.remove(tmp);
+                frames.add(arrayAux[i]);
+                acertos++;
             }
-            erros++;
-        } else {
-            quadros.remove(tmp);
-            quadros.add(pageNumber);
-            acertos++;
         }
     }
-
 }
