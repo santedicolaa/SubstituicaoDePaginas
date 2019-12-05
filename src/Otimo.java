@@ -57,7 +57,7 @@ public class Otimo {
                     int ini_delta = i+1;
                     delta.clear();
                     if(ini_delta>=arrayAux.length){
-                        System.out.println("Falta! Sai o "+quadros.get(0)+" e entra o "+arrayAux[i]);
+                        System.out.println("Falta! Sai o "+ quadros.get(0) +" e entra o "+arrayAux[i]);
                         quadros.remove(0);
                         quadros.add(0,arrayAux[i]);
                     }
@@ -74,14 +74,13 @@ public class Otimo {
                             }
                         }
 
-                        delta.clear();
                         System.out.println("Falta! Sai o "+quadros.get(aux)+" e entra o "+arrayAux[i]);
                         quadros.remove(aux);
                         quadros.add(aux,arrayAux[i]);
                     }
                 }
             }
-            
+
             else{
                 System.out.println("Acerto! Permanece o "+arrayAux[i]);
                 this.acertos++;
