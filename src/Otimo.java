@@ -35,7 +35,7 @@ public class Otimo {
         return delta+1;
     }
 
-    public void rodar(String[] stringEntrada) {
+    public void otimo(String[] stringEntrada) {
         int i, j, aux;
 
         String[] arrayAux = new String[stringEntrada.length];
@@ -54,9 +54,7 @@ public class Otimo {
                 }
 
                 else{
-                    int ini_delta = i+1;
-                    delta.clear();
-                    if(ini_delta>=arrayAux.length){
+                    if(i+1 == arrayAux.length){
                         System.out.println("Falta! Sai o "+ quadros.get(0) +" e entra o "+arrayAux[i]);
                         quadros.remove(0);
                         quadros.add(0,arrayAux[i]);
@@ -64,7 +62,7 @@ public class Otimo {
 
                     else{
                         for(j=0;j<quadros.size();j++){
-                            delta.add(calcularDelta(arrayAux,ini_delta,quadros.get(j)));
+                            delta.add(calcularDelta(arrayAux,i+1,quadros.get(j)));
                         }
 
                         aux = 0;
@@ -78,6 +76,7 @@ public class Otimo {
                         quadros.remove(aux);
                         quadros.add(aux,arrayAux[i]);
                     }
+                    delta.clear();
                 }
             }
 
