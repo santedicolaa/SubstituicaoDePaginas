@@ -27,12 +27,21 @@ public class Main {
         for (int qtdFramesi = Integer.parseInt(qtdeFramesInicial); qtdFramesi <= qtdeFramesf; qtdFramesi++) {
             //AlgoritmoDeSubstituicao mru = new MRU(qtdFramesi);
             //AlgoritmoDeSubstituicao fifo = new FIFO(qtdFramesi);
-            Otimo otimo = new Otimo(qtdFramesi);
-            otimo.calcular(stringReferencia);
+            //Otimo otimo = new Otimo(qtdFramesi);
+            //otimo.otimo(stringReferencia);
 
-            System.out.println("\nOtimo com "+qtdFramesi+" frames:");
-            System.out.println("Page Faults: " + otimo.getPageFaultCount());
-            System.out.println("Page Acertos: " + otimo.getPageFoundCount());
+            SC secondChance = new SC(qtdFramesi);
+            secondChance.secondChance(stringReferencia, 8);
+
+            //System.out.println("\nOtimo com "+qtdFramesi+" frames:");
+            //System.out.println("Page Faltas: " + otimo.getFaltas());
+            //System.out.println("Page Acertos: " + otimo.getAcertos());
+            //System.out.println("\n");
+
+            System.out.println("\nSC com "+qtdFramesi+" frames:");
+            System.out.println("Page Faltas: " + secondChance.getFaltas());
+            System.out.println("Page Acertos: " + secondChance.getAcertos());
+            System.out.println("\n");
 
             /*for (int i = 0; i < (stringReferencia.length); i++) {
                 //System.out.println(stringReferencia[i]);
@@ -50,13 +59,6 @@ public class Main {
             System.out.println("Page Acertos: " + fifo.getPageFoundCount());*/
 
         }
-
-        /*String a = "Angelo";
-        System.out.println(a+"\n");
-        String n = a.replace("o","");
-        System.out.println(n+"\n");*/
-
-
 
     }
 }
