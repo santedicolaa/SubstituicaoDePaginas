@@ -45,10 +45,11 @@ public class SC {
                     int j = 0;
                     while(j<bitR.size()){
                         if(bitR.get(j)==1){
-                            frames.add(frames.get(j));
-                            bitR.add(0);
+                            String aux = frames.get(j);
                             frames.remove(j);
                             bitR.remove(j);
+                            frames.add(aux);
+                            bitR.add(0);
                             j++;
                         }
                         else {
@@ -70,7 +71,6 @@ public class SC {
                 this.acertos++;
             }
 
-
             if(time == 0){
                 for(int k = 0; k<bitR.size();k++){
                     bitR.remove(k);
@@ -80,6 +80,4 @@ public class SC {
             }
         }
     }
-
-
 }
