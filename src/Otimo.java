@@ -1,39 +1,41 @@
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class Otimo {
-    private LinkedList<String> quadros;
+    private LinkedList<String> frames;
     private LinkedList<Integer> delta;
     private int acertos;
     private int faltas;
-    private int numeroDeQuadros;
+    private int qtd_frames;
 
     public Otimo(int frames) {
         this.acertos = 0;
         this.faltas = 0;
-        this.numeroDeQuadros = frames;
-        this.quadros = new LinkedList<>();
+        this.qtd_frames = frames;
+        this.frames = new LinkedList<>();
         this.delta = new LinkedList<>();
 
     }
 
-    public int getPageFoundCount() {
+    public int getAcertos() {
         return acertos;
     }
 
-    public int getPageFaultCount() {
+    public int getFaltas() {
         return faltas;
     }
 
-    public int calcularDelta (String[] array, int ini, String num){
+    public int calcularDelta (String[] array, int ini, int index){
         int delta = 0;
         for(int i = ini; i<array.length; i++){
-            if(num.equals(array[i])){
+            if(frames.get(index).equals(array[i])){
                 return delta;
             }
             delta++;
         }
         return delta+1;
     }
+
 
     public void otimo(String[] stringEntrada) {
         int i, j, aux;
@@ -45,43 +47,40 @@ public class Otimo {
         }
 
         for (i = 0; i<arrayAux.length; i++){
-            if(!quadros.contains(arrayAux[i])){
+            if(!frames.contains(arrayAux[i])){
                 this.faltas++;
 
-                if(quadros.size() < numeroDeQuadros){
-                    System.out.println("Falta! Entra o "+arrayAux[i]);
-                    quadros.add(arrayAux[i]);
+                if(frames.size() < qtd_frames){
+                    frames.add(arrayAux[i]);
                 }
 
                 else{
                     if(i+1 == arrayAux.length){
-                        System.out.println("Falta! Sai o "+ quadros.get(0) +" e entra o "+arrayAux[i]);
-                        quadros.remove(0);
-                        quadros.add(0,arrayAux[i]);
+                        frames.remove(0);
+                        frames.add(0,arrayAux[i]);
                     }
 
                     else{
-                        for(j=0;j<quadros.size();j++){
-                            delta.add(calcularDelta(arrayAux,i+1,quadros.get(j)));
+                        delta.clear();
+                        for(j=0;j<frames.size();j++){
+                            delta.add(calcularDelta(arrayAux,i+1,j));
                         }
 
                         aux = 0;
                         for(j = 0; j<delta.size();j++){
+
                             if(delta.get(j) > aux){
-                                aux = j;
+                                aux = delta.get(j);
                             }
                         }
 
-                        System.out.println("Falta! Sai o "+quadros.get(aux)+" e entra o "+arrayAux[i]);
-                        quadros.remove(aux);
-                        quadros.add(aux,arrayAux[i]);
+                        frames.remove(delta.indexOf(aux));
+                        frames.add(delta.indexOf(aux),arrayAux[i]);
                     }
-                    delta.clear();
                 }
             }
 
             else{
-                System.out.println("Acerto! Permanece o "+arrayAux[i]);
                 this.acertos++;
             }
         }
